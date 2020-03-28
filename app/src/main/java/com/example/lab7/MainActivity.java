@@ -5,6 +5,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,9 +36,27 @@ public class MainActivity extends AppCompatActivity {
         String textTitle = editTextTitle.getText().toString();
         String textContent = editTextMessage.getText().toString();
 
+        Intent activityIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+
+        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
+        broadcastIntent.putExtra("toastMessage", textContent);
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this,
+                0,broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_hot_tub_black_24dp).setContentTitle(textTitle)
-                .setContentText(textContent).setPriority(NotificationCompat.PRIORITY_HIGH).build();
+                .setSmallIcon(R.drawable.ic_hot_tub_black_24dp)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(Color.BLUE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .build();
 
         notificationManager.notify(1, notification);
     }
@@ -44,9 +65,27 @@ public class MainActivity extends AppCompatActivity {
         String textTitle = editTextTitle.getText().toString();
         String textContent = editTextMessage.getText().toString();
 
+        Intent activityIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                0, activityIntent, 0);
+
+        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
+        broadcastIntent.putExtra("toastMessage", textContent);
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this,
+                0,broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
-                .setSmallIcon(R.drawable.ic_hot_tub_black_24dp).setContentTitle(textTitle)
-                .setContentText(textContent).setPriority(NotificationCompat.PRIORITY_LOW).build();
+                .setSmallIcon(R.drawable.ic_hot_tub_black_24dp)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(Color.BLUE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .build();
 
         notificationManager.notify(2, notification);
     }
